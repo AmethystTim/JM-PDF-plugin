@@ -29,6 +29,7 @@ class JMcomicPDFPlugin(BasePlugin):
             "/jm [ID]": r"^/jm (\d+)$",
             "/jm [ID] [CHAPTER]": r"^/jm (\d+) (\d+)$"
         }
+        self.waittime = 20  # 自动撤回时间
     
     def matchPattern(self, msg):
         '''
@@ -104,9 +105,8 @@ class JMcomicPDFPlugin(BasePlugin):
                     f"{manga_id}{chap}.pdf"
                 )
                 if ctx.event.query.launcher_type == LauncherTypes.GROUP:
-                    waittime = 10
-                    await ctx.reply(MessageChain([Plain(f"文件发送完成，{waittime}s后自动撤回")]))
-                    asyncio.create_task(undo_file(self.napcat, ctx, manga_id, chap, waittime))
+                    await ctx.reply(MessageChain([Plain(f"文件发送完成，{self.waittime}s后自动撤回")]))
+                    asyncio.create_task(undo_file(self.napcat, ctx, manga_id, chap, self.waittime))
             case "/jm [ID] [CHAPTER]":
                 manga_id = re.search(r"^/jm (\d+) (\d+)$", msg).group(1)
                 chap = str(re.search(r"^/jm (\d+) (\d+)$", msg).group(2))
@@ -146,9 +146,8 @@ class JMcomicPDFPlugin(BasePlugin):
                     f"{manga_id}{chap}.pdf"
                 )
                 if ctx.event.query.launcher_type == LauncherTypes.GROUP:
-                    waittime = 20
-                    await ctx.reply(MessageChain([Plain(f"文件发送完成，{waittime}s后自动撤回")]))
-                    asyncio.create_task(undo_file(self.napcat, ctx, manga_id, chap, waittime))
+                    await ctx.reply(MessageChain([Plain(f"文件发送完成，{self.waittime}s后自动撤回")]))
+                    asyncio.create_task(undo_file(self.napcat, ctx, manga_id, chap, self.waittime))
             case _:
                 pass
         
