@@ -55,7 +55,7 @@ download:
     batch_count: 45
 ```
 
-### 指令🤖
+## 指令🤖
 
 |指令|说明|参数|备注|
 |-|-|-|-|
@@ -63,9 +63,9 @@ download:
 |`/jm [jmID]`|根据禁漫号下载漫画|`jmID`|`jmID`：漫画ID|
 |`/jm [jmID] [chapter]`|下载指定章节漫画|`jmID` `chapter`|`chapter`：指定章节|
 
-### 演示✨
+## 演示✨
 
-#### 单章节漫画
+### 单章节漫画
 
 <div align="center">
 
@@ -73,7 +73,7 @@ download:
 
 </div>
 
-#### 多章节漫画
+### 多章节漫画
 
 <div align="center">
 
@@ -87,7 +87,7 @@ download:
 
 </div>
 
-#### 文案匹配
+### 文案匹配
 
 <div align="center">
 
@@ -95,14 +95,16 @@ download:
 
 </div>
 
-### 计划实现🔮
+## 计划实现🔮
 
 先挖坑，之后随缘填，有任何想法欢迎提issue或PR
 
 - [x] 定时撤回
 - [ ] 定时清理缓存漫画
+- [ ] 搜索漫画
+- [ ] 获取分类/排行榜
 
-### 常见问题❓
+## 常见问题❓
 
 |Q|A|
 |-|-|
