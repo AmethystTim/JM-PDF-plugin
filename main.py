@@ -1,6 +1,3 @@
-import asyncio
-
-from flask import send_file
 from pkg.plugin.context import register, handler, BasePlugin, APIHost, EventContext
 from pkg.plugin.events import *  # 导入事件类
 from pkg.platform.types import *
@@ -11,6 +8,8 @@ from plugins.JM_PDF_plugin.utils.undofile import undo_file
 from plugins.JM_PDF_plugin.utils.sendfile import send_file
 import re
 import os
+import shutil
+import asyncio
 
 current_dir = os.path.dirname(__file__)
 
@@ -30,6 +29,7 @@ class JMcomicPDFPlugin(BasePlugin):
             "/jm [ID] [CHAPTER]": r"^/jm (\d+) (\d+)$"
         }
         self.waittime = 20  # 自动撤回时间
+        self.maxfilecount = 20 # 最大文件数量
     
     def matchPattern(self, msg):
         '''
@@ -150,6 +150,25 @@ class JMcomicPDFPlugin(BasePlugin):
                     asyncio.create_task(undo_file(self.napcat, ctx, manga_id, chap, self.waittime))
             case _:
                 pass
+            
+        files = os.listdir(self.pdf_dir)
+        files = [f for f in files if not f.endswith(".gitkeep")]    # 忽略.gitkeep
+        if len(files) >= self.maxfilecount: # 超过设定文件数量上限清除缓存
+            self.ap.logger.info(f"[JM PDF plugin] 超过设定文件数量上限，清除缓存")
+            file_time = [{f: os.path.getmtime(os.path.join(self.pdf_dir, f))} for f in files]
+            file_time.sort(key=lambda x: list(x.values())[0])
+            self.ap.logger.info(file_time)
+            try:
+                for f in file_time[:self.maxfilecount//2]:
+                    if os.path.isfile(os.path.join(self.pdf_dir, list(f.keys())[0])):
+                        os.remove(os.path.join(self.pdf_dir, list(f.keys())[0]))
+                    elif os.path.isdir(os.path.join(self.pdf_dir, list(f.keys())[0])):
+                        shutil.rmtree(os.path.join(self.pdf_dir, list(f.keys())[0]))
+                self.ap.logger.info(f"[JM PDF plugin] 已清除缓存")
+            except PermissionError as e:
+                self.ap.logger.error(f"[JM PDF plugin] 权限错误，无法删除文件: {os.path.join(self.pdf_dir, list(f.keys())[0])}. 错误信息: {e}")
+            except Exception as e:
+                self.ap.logger.error(f"[JM PDF plugin] 删除文件时发生未知错误: {e}")
         
     # 插件卸载时触发
     def __del__(self):
