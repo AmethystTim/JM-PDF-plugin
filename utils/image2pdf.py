@@ -34,13 +34,13 @@ def all2PDF(input_folder, pdfpath, pdfname, chap=1):
     subdir.sort()
     subdir = [entry for entry in subdir if entry == int(chap)]
     if subdir == []:
-        print(f"{chap}章不存在")
+        print(f"[JM PDF plugin] {chap}章不存在")
         return -1
     for i in subdir:
         with os.scandir(path + "/" + str(i)) as entries:
             for entry in entries:
                 if entry.is_dir():
-                    print("这一级不应该有自录")
+                    print(f"[JM PDF plugin] {path + "/" + str(i)}目录下不应该有自录")
                 if entry.is_file():
                     image.append(path + "/" + str(i) + "/" + entry.name)
 
@@ -61,7 +61,7 @@ def all2PDF(input_folder, pdfpath, pdfname, chap=1):
     output.save(pdf_file_path, "pdf", save_all=True, append_images=sources)
     end_time = time.time()
     run_time = end_time - start_time
-    print("运行时间：%3.2f 秒" % run_time)
+    print("[JM PDF plugin] 运行时间：%3.2f 秒" % run_time)
     return 0
 
 
@@ -84,10 +84,10 @@ def downloadManga(manga):
         jmcomic.download_album(manga, loadConfig)
         return 0
     except jmcomic.MissingAlbumPhotoException as e:
-        print(f'id={e.error_jmid}的本子不存在')
+        print(f'[JM PDF plugin] id={e.error_jmid}的本子不存在')
         return 1
     except jmcomic.JmcomicException as e:
-        print(f'jmcomic遇到异常: {e}')
+        print(f'[JM PDF plugin] jmcomic遇到异常: {e}')
         return -1
 
 def convertPDF(manga):
@@ -110,10 +110,10 @@ def convertPDF(manga):
             if not entry.name == manga:
                 continue
             if os.path.exists(os.path.join(os.path.join(path, entry.name+".pdf"))):
-                print("文件：《%s》 已存在，跳过" % entry.name)
+                print("[JM PDF plugin] 文件：《%s》 已存在，跳过" % entry.name)
                 break
             else:
-                print("开始转换：%s " % entry.name)
+                print("[JM PDF plugin] 开始转换：%s " % entry.name)
                 if len(os.listdir(os.path.join(path, entry.name))) > 1:
                     all2PDF(os.path.join(path, entry.name), path, f"{entry.name}-1")
                 else:
@@ -154,6 +154,6 @@ def mangaCache(id):
         data = yaml.load(f, Loader=yaml.FullLoader)
         path = data["dir_rule"]["base_dir"]
         if os.path.exists(os.path.join(path, id)):
-            print(f"漫画{id}已存在")
+            print(f"[JM PDF plugin] 漫画{id}已存在")
             return True
         return False

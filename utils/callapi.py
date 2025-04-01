@@ -11,8 +11,8 @@ class NapCatApi():
         发送文件
         
         args:
-            payload: dict, 负载字典
             api_url: str, 发送者类型
+            payload: dict, 发送内容
         return:
             None
         '''

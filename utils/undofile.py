@@ -14,7 +14,7 @@ async def undo_file(napcat: NapCatApi, ctx: EventContext, manga_id: str, chap: s
         wait_time: 撤回等待时间
     '''
     await asyncio.sleep(wait_time)
-    print(f"经过{wait_time}s，准备撤回")
+    print(f"[JM PDF plugin] 经过{wait_time}s，准备撤回")
     data = await napcat.callApi("/get_group_root_files", {"group_id": str(ctx.event.launcher_id)})
     file_list = data.get("data", []).get("files", [])
     target_file = None
@@ -23,11 +23,11 @@ async def undo_file(napcat: NapCatApi, ctx: EventContext, manga_id: str, chap: s
             target_file = f
             break
     if not target_file:
-        print(f"文件{manga_id}{chap}.pdf不存在，撤回失败")
+        print(f"[JM PDF plugin] 文件{manga_id}{chap}.pdf不存在，撤回失败")
         return
     await napcat.callApi("/delete_group_file", {
         "group_id": str(ctx.event.launcher_id),
         "file_id": target_file["file_id"],
         "busid": target_file["busid"]
     })
-    print(f"文件{manga_id}{chap}.pdf撤回成功")
+    print(f"[JM PDF plugin] 文件{manga_id}{chap}.pdf撤回成功")

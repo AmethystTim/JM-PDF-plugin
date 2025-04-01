@@ -81,13 +81,13 @@ class JMcomicPDFPlugin(BasePlugin):
                         case 0:
                             pass
                         case 1:
-                            self.ap.logger.info(f"jm{manga_id}对应漫画不存在")
+                            self.ap.logger.info(f"[JM PDF plugin] jm{manga_id}对应漫画不存在")
                             await ctx.reply(MessageChain([
                                 Plain(f"jm{manga_id}对应漫画不存在")
                             ]))
                             return
                         case -1:
-                            self.ap.logger.info(f"未知错误")
+                            self.ap.logger.info(f"[JM PDF plugin] 未知错误")
                             await ctx.reply(MessageChain([
                                 Plain(f"发生未知错误")
                             ]))
@@ -97,7 +97,7 @@ class JMcomicPDFPlugin(BasePlugin):
                         Plain(f"检测到jm{manga_id}存在多个章节，现在默认转换第一话\n请输入“/jm [jmID] [章节数]”指定章节")
                     ]))
                     chap = "-1"
-                self.ap.logger.info(f"发送文件：{os.path.normpath(os.path.join(self.pdf_dir, f"{manga_id}{chap}.pdf"))}")
+                self.ap.logger.info(f"[JM PDF plugin] 发送文件：{os.path.normpath(os.path.join(self.pdf_dir, f"{manga_id}{chap}.pdf"))}")
                 await send_file(
                     self.napcat, 
                     ctx, 
@@ -119,22 +119,22 @@ class JMcomicPDFPlugin(BasePlugin):
                         case 0:
                             pass
                         case 1:
-                            self.ap.logger.info(f"jm{manga_id}对应漫画不存在")
+                            self.ap.logger.info(f"[JM PDF plugin] jm{manga_id}对应漫画不存在")
                             await ctx.reply(MessageChain([
                                 Plain(f"jm{manga_id}对应漫画不存在")
                             ]))
                             return
                         case -1:
-                            self.ap.logger.info(f"未知错误")
+                            self.ap.logger.info(f"[JM PDF plugin] 未知错误")
                             await ctx.reply(MessageChain([
                                 Plain(f"发生未知错误")
                             ]))
                             return
                 match all2PDF(os.path.join(self.pdf_dir, manga_id), self.pdf_dir, f"{manga_id}{chap}", int(chap.replace('-', ''))):
                     case 0:
-                        self.ap.logger.info(f"jm{manga_id}转换完成")
+                        self.ap.logger.info(f"[JM PDF plugin] jm{manga_id}转换完成")
                     case -1:
-                        self.ap.logger.info(f"jm{manga_id}转换失败-章节{chap.replace('-', '')}不存在")
+                        self.ap.logger.info(f"[JM PDF plugin] jm{manga_id}转换失败-章节{chap.replace('-', '')}不存在")
                         await ctx.reply(MessageChain([
                             Plain(f"jm{manga_id}转换失败-章节{chap.replace('-', '')}不存在")
                         ]))
@@ -157,7 +157,6 @@ class JMcomicPDFPlugin(BasePlugin):
             self.ap.logger.info(f"[JM PDF plugin] 超过设定文件数量上限，清除缓存")
             file_time = [{f: os.path.getmtime(os.path.join(self.pdf_dir, f))} for f in files]
             file_time.sort(key=lambda x: list(x.values())[0])
-            self.ap.logger.info(file_time)
             try:
                 for f in file_time[:self.maxfilecount//2]:
                     if os.path.isfile(os.path.join(self.pdf_dir, list(f.keys())[0])):

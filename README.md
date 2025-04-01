@@ -1,6 +1,6 @@
 # JM PDF Plugin
 
-适用于**LangBot+NapCat**的漫画下载插件🧩，支持缓存，指定章节下载，文案匹配，定时撤回✨
+适用于**LangBot+NapCat**的漫画下载插件🧩，将你想看的漫画转换为PDF发送到QQ群聊/QQ私信中，支持缓存，指定章节下载，文案匹配，定时撤回✨
 
 图像转PDF参考项目：[image2pdf](https://github.com/salikx/image2pdf) by [salikx](https://github.com/salikx)
 
@@ -10,6 +10,7 @@
 - [x] 多章节漫画指定章节转换
 - [x] 匹配文案对应jmID
 - [x] 定时撤回，更适合Bot体质
+- [x] 缓存已下载漫画，自动清理较早缓存 
 
 ## 使用方法❗
 
@@ -100,7 +101,7 @@ download:
 先挖坑，之后随缘填，有任何想法欢迎提issue或PR
 
 - [x] 定时撤回
-- [ ] 定时清理缓存漫画
+- [x] 定期清理缓存漫画
 - [ ] 搜索漫画
 - [ ] 获取分类/排行榜
 
