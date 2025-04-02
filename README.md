@@ -102,7 +102,7 @@ download:
 
 <div align="center">
 
-<img src="./images/readme_search.png" width="65%">
+<img src="./images/readme_search.png" width="55%">
 
 <img src="./images/readme_searchres.png" width="65%">
 
