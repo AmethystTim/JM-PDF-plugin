@@ -1,3 +1,4 @@
 downloads/*
 !downloads/.gitkeep
 __pycache__/
+test/

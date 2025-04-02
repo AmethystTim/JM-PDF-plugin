@@ -6,6 +6,7 @@ from plugins.JM_PDF_plugin.utils.callapi import *
 from plugins.JM_PDF_plugin.utils.image2pdf import *
 from plugins.JM_PDF_plugin.utils.undofile import undo_file
 from plugins.JM_PDF_plugin.utils.sendfile import send_file
+from plugins.JM_PDF_plugin.utils.search import searchManga
 import re
 import os
 import shutil
@@ -26,7 +27,8 @@ class JMcomicPDFPlugin(BasePlugin):
         self.instructions = {
             "/jm": r"^/jm$",
             "/jm [ID]": r"^/jm (\d+)$",
-            "/jm [ID] [CHAPTER]": r"^/jm (\d+) (\d+)$"
+            "/jm [ID] [CHAPTER]": r"^/jm (\d+) (\d+)$",
+            "/jm search [KEYWORD]" : r"^/jm search (.+)$"
         }
         self.waittime = 20  # 自动撤回时间
         self.maxfilecount = 20 # 最大文件数量
@@ -148,6 +150,13 @@ class JMcomicPDFPlugin(BasePlugin):
                 if ctx.event.query.launcher_type == LauncherTypes.GROUP:
                     await ctx.reply(MessageChain([Plain(f"文件发送完成，{self.waittime}s后自动撤回")]))
                     asyncio.create_task(undo_file(self.napcat, ctx, manga_id, chap, self.waittime))
+            case "/jm search [KEYWORD]":
+                keyword = re.search(r"^/jm search (.+)$", msg).group(1)
+                self.ap.logger.info(f"[JM PDF plugin] 搜索关键字：{keyword}")
+                await ctx.reply(MessageChain([
+                    Plain("获取搜索结果中，请坐和放宽")
+                ]))
+                asyncio.create_task(searchManga(self.napcat, ctx, keyword, "site"))
             case _:
                 pass
             

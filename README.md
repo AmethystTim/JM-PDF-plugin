@@ -1,8 +1,6 @@
 # JM PDF Plugin
 
-适用于**LangBot+NapCat**的漫画下载插件🧩，将你想看的漫画转换为PDF发送到QQ群聊/QQ私信中，支持缓存，指定章节下载，文案匹配，定时撤回✨
-
-图像转PDF参考项目：[image2pdf](https://github.com/salikx/image2pdf) by [salikx](https://github.com/salikx)
+适用于**LangBot+NapCat**的漫画下载插件🧩，将你想看的漫画转换为PDF发送到QQ群聊/QQ私信中，支持缓存，指定章节下载，文案匹配，定时撤回，关键词搜索✨
 
 ## 插件功能🎨
 
@@ -11,6 +9,7 @@
 - [x] 匹配文案对应jmID
 - [x] 定时撤回，更适合Bot体质
 - [x] 缓存已下载漫画，自动清理较早缓存 
+- [x] 关键词搜索漫画
 
 ## 使用方法❗
 
@@ -25,13 +24,15 @@
 
 ### 网络配置🛜
 
-在`NapCat`消息平台中新增**HTTP服务器**，主机为`127.0.0.1`，端口为`3000`
+访问`NapCat`的webui（默认为`http://127.0.0.1:6099`），在**网络配置**栏目中新建**HTTP服务器**，主机为`127.0.0.1`，端口为`3000`
 
 <div align="center">
 
-<img src="./images/napcat.png" width="50%">
+<img src="./images/napcat_1.png" width="60%">
 
 </div>
+
+> 若发生端口冲突，请修改端口为其他值，同时将`main.py`文件中`self.napcat = NapCatApi('127.0.0.1', 3000)`中的端口修改为新端口
 
 ### 偏好配置🔧
 
@@ -63,6 +64,7 @@ download:
 |`/jm`||||
 |`/jm [jmID]`|根据禁漫号下载漫画|`jmID`|`jmID`：漫画ID|
 |`/jm [jmID] [chapter]`|下载指定章节漫画|`jmID` `chapter`|`chapter`：指定章节|
+|`/jm search [keyword]`|搜索漫画|`keyword`|`keyword`：搜索关键字|
 
 ## 演示✨
 
@@ -96,13 +98,23 @@ download:
 
 </div>
 
+### 搜索漫画
+
+<div align="center">
+
+<img src="./images/readme_search.png" width="65%">
+
+<img src="./images/readme_searchres.png" width="65%">
+
+</div>
+
 ## 计划实现🔮
 
 先挖坑，之后随缘填，有任何想法欢迎提issue或PR
 
 - [x] 定时撤回
 - [x] 定期清理缓存漫画
-- [ ] 搜索漫画
+- [x] 搜索漫画
 - [ ] 获取分类/排行榜
 
 ## 常见问题❓
@@ -116,3 +128,8 @@ download:
 
 
 > 有其他问题欢迎提issue或在交流群讨论
+
+## 致谢🤝
+
+- **用于爬取JM的Python API封装**：[JMComic-Crawler-Python](https://github.com/hect0x7/JMComic-Crawler-Python) by [hect0x7](https://github.com/hect0x7)
+- **图像转PDF**：[image2pdf](https://github.com/salikx/image2pdf) by [salikx](https://github.com/salikx)

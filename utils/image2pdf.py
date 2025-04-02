@@ -120,23 +120,7 @@ def convertPDF(manga):
                     all2PDF(os.path.join(path, entry.name), path, f"{entry.name}")
             if len(os.listdir(os.path.join(path, entry.name))) > 1:
                 return 1
-    return None
-                    
-def searchManga(id):
-    '''
-    搜索漫画标题
-    
-    args:
-        id: 漫画id
-        
-    return: 
-        漫画标题
-    '''
-    client = jmcomic.JmOption.default().new_jm_client()
-    page = client.search_site(search_query=id)
-    album: jmcomic.JmAlbumDetail = page.single_album
-    return album.title
-
+    return None        
 
 def mangaCache(id):
     '''
