@@ -32,6 +32,14 @@ class JMcomicPDFPlugin(BasePlugin):
         }
         self.waittime = 20  # 自动撤回时间
         self.maxfilecount = 20 # 最大文件数量
+        
+        commands = os.path.join(os.path.dirname(__file__), "commands.yml")
+        with open(commands, "r", encoding="utf-8") as f:
+            self.command_manager = yaml.load(f, Loader=yaml.FullLoader)
+            for command in self.command_manager.get("commands", []):
+                if not list(command.values())[0]:
+                    if not self.instructions.get(list(command.keys())[0]):
+                        self.instructions[list(command.keys())[0]] = r"^\s\S"
     
     def matchPattern(self, msg):
         '''
@@ -56,15 +64,22 @@ class JMcomicPDFPlugin(BasePlugin):
     @handler(PersonMessageReceived)
     @handler(GroupMessageReceived)
     async def group_message_received(self, ctx: EventContext):
+        # 群聊白名单机制
+        if self.command_manager.get("whitelist").get("enabled"):
+            if ctx.event.query.launcher_type == LauncherTypes.GROUP:
+                if not int(ctx.event.launcher_id) in self.command_manager.get("whitelist").get("groups"):
+                    self.ap.logger.info(f"[JM PDF plugin] 群{ctx.event.launcher_id}不在白名单中，忽略命令")
+                    return
         msg = str(ctx.event.message_chain).strip()
         # 文案匹配
         if not msg.startswith("/jm"):
-            manga_id = "".join([char for char in msg if char.isdigit()])
-            if 6 <= len(manga_id) <= 7:
-                await ctx.reply(MessageChain([
-                    Plain(f"检测到jm号{manga_id}")
-                ]))
-                msg = f"/jm {manga_id}"
+            if next((item["[text]"] for item in self.command_manager.get("commands", []) if "[text]" in item), None):
+                manga_id = "".join([char for char in msg if char.isdigit()])
+                if 6 <= len(manga_id) <= 7:
+                    await ctx.reply(MessageChain([
+                        Plain(f"检测到jm号{manga_id}")
+                    ]))
+                    msg = f"/jm {manga_id}"
         # 匹配指令
         match self.matchPattern(msg):
             case "/jm":

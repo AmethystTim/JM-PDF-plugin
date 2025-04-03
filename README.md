@@ -1,6 +1,6 @@
 # JM PDF Plugin
 
-适用于**LangBot+NapCat**的漫画下载插件🧩，将你想看的漫画转换为PDF发送到QQ群聊/QQ私信中，支持缓存，指定章节下载，文案匹配，定时撤回，关键词搜索✨
+适用于**LangBot+NapCat**的漫画下载插件🧩，将你想看的漫画转换为PDF发送到QQ群聊/QQ私信中，支持缓存，指定章节下载，文案匹配，定时撤回，关键词搜索、白名单管理✨
 
 ## 插件功能🎨
 
@@ -36,7 +36,7 @@
 
 ### 偏好配置🔧
 
-修改`config.yml`中的`base_dir`为你想存储漫画的目录
+- 修改`config.yml`中的`base_dir`为你想存储漫画的目录
 
 ```yaml
 # Github Actions 下载脚本配置
@@ -55,6 +55,33 @@ download:
   threading:
     # batch_count: 章节的批量下载图片线程数
     batch_count: 45
+```
+
+- 编辑`commands.yml`，可以自定义白名单、激活/禁用指令，请根据自己的需求进行修改
+
+```yaml
+# 插件指令管理
+
+# 白名单机制，启用后仅允许白名单群聊使用指令
+whitelist: 
+  # 是否启用群聊白名单
+  enabled: false
+  # 白名单群聊id
+  groups: [
+    114514,
+  ]
+
+# 指令管理列表，若需禁用某指令，则将其对应值由true修改为false
+commands: [
+  # 指令：/jm [jmID]
+  "/jm [ID]": true,
+  # 指令：/jm [jmID] [chapter]
+  "/jm [ID] [CHAPTER]": true,
+  # 指令：文案匹配
+  "[text]": true,
+  # 指令：/jm search [keyword]
+  "/jm search [KEYWORD]": true,
+]
 ```
 
 ## 指令🤖
