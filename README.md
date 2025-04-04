@@ -45,18 +45,28 @@
 version: '2.0'
 
 dir_rule:
-  # 漫画/PDF的存储目录
-  base_dir: "C:\\Users\\Hello\\Desktop\\downloads" 
+  base_dir: "C:\\Users\\Hello\\Desktop\\downloads" # 漫画/PDF的存储目录
   rule: Bd_Aid_Pindex
 
 download:
-  cache: true
+  cache: true # 如果要下载的文件在磁盘上已存在，不用再下一遍了吧？
   image:
-    decode: true
-    suffix: .jpg
+    decode: true # JM的原图是混淆过的，要不要还原？
+    suffix: .jpg # 把图片都转为.jpg格式
   threading:
     # batch_count: 章节的批量下载图片线程数
+    # 数值大，下得快，配置要求高，对禁漫压力大
+    # 数值小，下得慢，配置要求低，对禁漫压力小
+    # PS: 禁漫网页一般是一次请求50张图
     batch_count: 45
+
+# 插件项配置，若不需要请使用“#”注释掉
+plugins:
+  after_init:
+    - plugin: login # 登录插件，以下载某些需要登录才能下载的漫画，需要配置登录信息
+      kwargs:
+        username: your_username # 用户名
+        password: your_password # 密码
 ```
 
 - 编辑`commands.yml`，可以自定义白名单、激活/禁用指令，请根据自己的需求进行修改

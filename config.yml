@@ -5,11 +5,6 @@ dir_rule:
   base_dir: "C:\\Users\\Hello\\Desktop\\downloads" # 漫画/PDF的存储目录
   rule: Bd_Aid_Pindex
 
-# client:
-#   domain:
-#     - 18comic.vip
-#     - 18comic.org
-
 download:
   cache: true # 如果要下载的文件在磁盘上已存在，不用再下一遍了吧？
   image:
