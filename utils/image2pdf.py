@@ -115,7 +115,8 @@ def convertPDF(manga):
             else:
                 print("[JM PDF plugin] 开始转换：%s " % entry.name)
                 if len(os.listdir(os.path.join(path, entry.name))) > 1:
-                    all2PDF(os.path.join(path, entry.name), path, f"{entry.name}-1")
+                    if all2PDF(os.path.join(path, entry.name), path, f"{entry.name}-1") == -1:
+                        return -1
                 else:
                     all2PDF(os.path.join(path, entry.name), path, f"{entry.name}")
             if len(os.listdir(os.path.join(path, entry.name))) > 1:

@@ -109,11 +109,17 @@ class JMcomicPDFPlugin(BasePlugin):
                                 Plain(f"发生未知错误")
                             ]))
                             return
-                if convertPDF(manga_id) == 1:
-                    await ctx.reply(MessageChain([
-                        Plain(f"检测到jm{manga_id}存在多个章节，现在默认转换第一话\n请输入“/jm [jmID] [章节数]”指定章节")
-                    ]))
-                    chap = "-1"
+                match convertPDF(manga_id):
+                    case 1:
+                        await ctx.reply(MessageChain([
+                            Plain(f"检测到jm{manga_id}存在多个章节，现在默认转换第一话\n请输入“/jm [jmID] [章节数]”指定章节")
+                        ]))
+                        chap = "-1"
+                    case -1:
+                        await ctx.reply(MessageChain([
+                            Plain(f"检测到jm{manga_id}存在多个章节，尝试转换第一话，但是第一话不存在\n请输入“/jm [jmID] [章节数]”指定存在章节")
+                        ]))
+                        return
                 self.ap.logger.info(f"[JM PDF plugin] 发送文件：{os.path.normpath(os.path.join(self.pdf_dir, f"{manga_id}{chap}.pdf"))}")
                 await send_file(
                     self.napcat, 
