@@ -21,3 +21,11 @@ download:
     # 数值小，下得慢，配置要求低，对禁漫压力小
     # PS: 禁漫网页一般是一次请求50张图
     batch_count: 45
+
+# 插件项配置，若不需要请使用“#”注释掉
+plugins:
+  after_init:
+    - plugin: login # 登录插件，以下载某些需要登录才能下载的漫画，需要配置登录信息
+      kwargs:
+        username: your_username # 用户名
+        password: your_password # 密码
