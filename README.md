@@ -45,20 +45,20 @@
 version: '2.0'
 
 dir_rule:
-  base_dir: "C:\\Users\\Hello\\Desktop\\downloads" # 漫画/PDF的存储目录
+  base_dir: "C:\\Users\\Hello\\Desktop\\downloads" # 漫画/PDF的存储目录（注意转义字符的使用）
   rule: Bd_Aid_Pindex
 
-
-# 域名配置，若均无法访问可尝试用“#”注释，使用默认域名
+# 域名配置，若均无法访问可尝试用“#”注释，使用默认配置的域名列表
 client:
   impl: api
   domain:
     api:
-      - www.cdnmhwscc.vip
-      - www.cdnblackmyth.club
       - www.cdnmhws.cc
       - www.cdnuc.vip
+      - www.cdnmhwscc.vip
+      - www.cdnblackmyth.club
 
+# 下载配置，非必要无需关注
 download:
   cache: true # 如果要下载的文件在磁盘上已存在，不用再下一遍了吧？
   image:
@@ -66,9 +66,6 @@ download:
     suffix: .jpg # 把图片都转为.jpg格式
   threading:
     # batch_count: 章节的批量下载图片线程数
-    # 数值大，下得快，配置要求高，对禁漫压力大
-    # 数值小，下得慢，配置要求低，对禁漫压力小
-    # PS: 禁漫网页一般是一次请求50张图
     batch_count: 45
 
 # 插件项配置，若不需要请使用“#”注释掉
