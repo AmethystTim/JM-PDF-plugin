@@ -13,11 +13,32 @@
 - [x] 白名单管理
 - [x] 指令管理  
 
+## 计划实现🔮
+
+先挖坑，之后随缘填，有任何想法欢迎提issue或PR
+
+- [x] 定时撤回
+- [x] 定期清理缓存漫画
+- [x] 搜索漫画
+- [ ] 获取分类/排行榜
+
+## 常见问题❓
+
+|Q|A|
+|-|-|
+|插件加载失败|请按照README中的安装步骤进行，并确保您的插件**目录名称**为`JM_PDF_plugin`|
+|漫画下载失败|1. 检查网络配置，推荐添加网络代理<br>2. 检查`jmcomic`包是否为最新版本，建议`pip install -U jmcomic`后重启bot（issue [#23](https://github.com/AmethystTim/JM_PDF_plugin/issues/23)）|
+|与`langbot`内置AI对话冲突|issue [#4](https://github.com/AmethystTim/JM_PDF_plugin/issues/4)|
+|`Docker`部署langbot导致的路径问题|issue [#9](https://github.com/AmethystTim/JM_PDF_plugin/issues/9)|
+
+
+> 有其他问题欢迎提issue或在交流群讨论
+
 ## 使用方法❗
 
 ### 插件安装🛠️
 
-配置完成 [QChatGPT](https://github.com/RockChinQ/QChatGPT) 主程序后使用管理员账号向机器人发送命令即可安装：
+配置完成 [LangBot](https://github.com/RockChinQ/QChatGPT) 主程序后使用管理员账号向机器人发送命令即可安装：
 
 ```
 !plugin get https://github.com/AmethystTim/JM_PDF_plugin.git
@@ -38,7 +59,11 @@
 
 ### 偏好配置🔧
 
-- 修改`config.yml`中的`base_dir`为你想存储漫画的目录
+- 编辑`config.yml`
+  - `dir_rule`部分：修改`base_dir`为你想存储漫画的目录
+  - `client`部分：若均无法访问可尝试用“**#**”注释掉`client`所有部分，使用默认配置的域名列表
+  - `download`部分：一般情况下可忽略
+  - `plugins`部分：大部分漫画都可以在**无登录状态下**访问/下载，但是有些漫画需要登录才可以查看，若有需要可以配置你的账号信息
 
 ```yaml
 # Github Actions 下载脚本配置
@@ -77,7 +102,7 @@ plugins:
         password: your_password # 密码
 ```
 
-- 编辑`commands.yml`，可以自定义白名单、激活/禁用指令，请根据自己的需求进行修改
+- 编辑`commands.yml`，可以**自定义白名单**、**激活/禁用指令**，请根据自己的需求进行修改
 
 ```yaml
 # 插件指令管理
@@ -154,27 +179,6 @@ commands: [
 <img src="./images/readme_searchres.png" width="65%">
 
 </div>
-
-## 计划实现🔮
-
-先挖坑，之后随缘填，有任何想法欢迎提issue或PR
-
-- [x] 定时撤回
-- [x] 定期清理缓存漫画
-- [x] 搜索漫画
-- [ ] 获取分类/排行榜
-
-## 常见问题❓
-
-|Q|A|
-|-|-|
-|插件加载失败|请按照README中的安装步骤进行，并确保您的插件**目录名称**为`JM_PDF_plugin`|
-|漫画下载失败|1. 检查网络配置，推荐添加网络代理<br>2. 检查`jmcomic`包是否为最新版本，建议`pip install -U jmcomic`后重启bot（issue [#23](https://github.com/AmethystTim/JM_PDF_plugin/issues/23)）|
-|与`langbot`内置AI对话冲突|issue [#4](https://github.com/AmethystTim/JM_PDF_plugin/issues/4)|
-|`Docker`部署langbot导致的路径问题|issue [#9](https://github.com/AmethystTim/JM_PDF_plugin/issues/9)|
-
-
-> 有其他问题欢迎提issue或在交流群讨论
 
 ## 致谢🤝
 
