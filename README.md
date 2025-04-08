@@ -48,6 +48,17 @@ dir_rule:
   base_dir: "C:\\Users\\Hello\\Desktop\\downloads" # 漫画/PDF的存储目录
   rule: Bd_Aid_Pindex
 
+
+# 域名配置，若均无法访问可尝试用“#”注释，使用默认域名
+client:
+  impl: api
+  domain:
+    api:
+      - www.cdnmhwscc.vip
+      - www.cdnblackmyth.club
+      - www.cdnmhws.cc
+      - www.cdnuc.vip
+
 download:
   cache: true # 如果要下载的文件在磁盘上已存在，不用再下一遍了吧？
   image:
