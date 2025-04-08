@@ -85,7 +85,9 @@ class JMcomicPDFPlugin(BasePlugin):
             case "/jm":
                 await ctx.reply(MessageChain([
                     Plain("jm卡脖子核心技术\n"),
-                    Plain("将jm号对应本子转化为pdf，请输入jm号进行转化，如：/jm 123456")
+                    Plain("将jm号对应本子转化为pdf，请输入jm号进行转化，如：/jm 123456\n"),
+                    Plain("指定章节转化，如转化jm号为123456的第2章：/jm 123456 2\n"),
+                    Plain("jm站内搜索，如：/jm search 偶像大师\n")
                 ]))
             case "/jm [ID]":
                 manga_id = re.search(r"^/jm (\d+)$", msg).group(1)
@@ -100,7 +102,7 @@ class JMcomicPDFPlugin(BasePlugin):
                         case 1:
                             self.ap.logger.info(f"[JM PDF plugin] jm{manga_id}对应漫画不存在")
                             await ctx.reply(MessageChain([
-                                Plain(f"jm{manga_id}对应漫画不存在")
+                                Plain(f"jm{manga_id}对应漫画不存在或需要配置登录信息")
                             ]))
                             return
                         case -1:
@@ -144,7 +146,7 @@ class JMcomicPDFPlugin(BasePlugin):
                         case 1:
                             self.ap.logger.info(f"[JM PDF plugin] jm{manga_id}对应漫画不存在")
                             await ctx.reply(MessageChain([
-                                Plain(f"jm{manga_id}对应漫画不存在")
+                                Plain(f"jm{manga_id}对应漫画不存在或需要配置登录信息")
                             ]))
                             return
                         case -1:
@@ -177,7 +179,10 @@ class JMcomicPDFPlugin(BasePlugin):
                 await ctx.reply(MessageChain([
                     Plain("获取搜索结果中，请坐和放宽")
                 ]))
-                asyncio.create_task(searchManga(self.napcat, ctx, keyword, "site"))
+                try:
+                    await asyncio.wait_for(searchManga(self.napcat, ctx, keyword, "site"), timeout=15)
+                except asyncio.TimeoutError:
+                    await ctx.reply(MessageChain([Plain("搜索超时，可能是网络连接问题，请稍后重试")]))
             case _:
                 pass
             

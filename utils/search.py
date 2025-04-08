@@ -1,4 +1,6 @@
 import jmcomic
+import os
+import yaml
 from plugins.JM_PDF_plugin.utils.callapi import NapCatApi
 from pkg.plugin.context import EventContext
 
@@ -13,7 +15,14 @@ async def searchManga(napcat: NapCatApi, ctx: EventContext, search_query: str, m
         mode: 搜索模式
     '''
     msg = '搜索结果：'
-    client = jmcomic.JmOption.default().new_jm_client()
+    client = None
+    config_path = os.path.join(os.path.dirname(__file__), "../config.yml")
+    with open(config_path, "r", encoding="utf-8") as cfg:
+        config: dict = yaml.load(cfg, Loader = yaml.FullLoader)
+        client = jmcomic.JmOption.default().new_jm_client(
+            domain_list=config.get("client", {}).get("domain", {}).get("api", None),
+            impl="api"
+        )
     page = None
     match mode:
         case "site": # 站内搜索
