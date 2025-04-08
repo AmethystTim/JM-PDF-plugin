@@ -120,7 +120,7 @@ class JMcomicPDFPlugin(BasePlugin):
                             Plain(f"检测到jm{manga_id}存在多个章节，尝试转换第一话，但是第一话不存在\n请输入“/jm [jmID] [章节数]”指定存在章节")
                         ]))
                         return
-                self.ap.logger.info(f"[JM PDF plugin] 发送文件：{os.path.normpath(os.path.join(self.pdf_dir, f"{manga_id}{chap}.pdf"))}")
+                self.ap.logger.info(f'[JM PDF plugin] 发送文件：{os.path.join(self.pdf_dir, f"{manga_id}{chap}.pdf")}')
                 await send_file(
                     self.napcat, 
                     ctx, 
