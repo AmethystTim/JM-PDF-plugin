@@ -3,6 +3,7 @@ import os
 import yaml
 from plugins.JM_PDF_plugin.utils.callapi import NapCatApi
 from pkg.plugin.context import EventContext
+from pkg.core.entities import LauncherTypes
 
 async def searchManga(napcat: NapCatApi, ctx: EventContext, search_query: str, mode: str):
     '''
@@ -32,9 +33,9 @@ async def searchManga(napcat: NapCatApi, ctx: EventContext, search_query: str, m
     for album_id, title in page:
         print(f'[{album_id}]: {title}')
         msg += f'\n[{album_id}]: {title}'
-    await NapCatApi.callApi(napcat, '/send_group_forward_msg', {
-        "group_id": str(ctx.event.launcher_id),
-        "user_id": "",
+    await NapCatApi.callApi(napcat, '/send_forward_msg', {
+        "group_id": str(ctx.event.launcher_id) if ctx.event.query.launcher_type == LauncherTypes.GROUP else "",
+        "user_id": str(ctx.event.query.sender_id) if ctx.event.query.launcher_type == LauncherTypes.PERSON else "",
         "messages": [
             {
                 "type": "node",
