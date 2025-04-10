@@ -40,7 +40,7 @@ def all2PDF(input_folder, pdfpath, pdfname, chap=1):
         with os.scandir(path + "/" + str(i)) as entries:
             for entry in entries:
                 if entry.is_dir():
-                    print(f"[JM PDF plugin] {path + "/" + str(i)}目录下不应该有自录")
+                    print(f"[JM PDF plugin] {path + "/" + str(i)}目录下不应该有目录")
                 if entry.is_file():
                     image.append(path + "/" + str(i) + "/" + entry.name)
 

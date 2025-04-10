@@ -26,7 +26,7 @@
 
 |Q|A|
 |-|-|
-|插件加载失败|请按照README中的安装步骤进行，并确保您的插件**目录名称**为`JM_PDF_plugin`|
+|插件加载失败|请不要直接从`Langbot webui`的插件市场中直接安装，请按照README中的安装步骤进行，并确保您的插件**目录名称**为`JM_PDF_plugin`|
 |漫画下载失败|1. 检查网络配置，推荐添加网络代理<br>2. 检查`jmcomic`包是否为最新版本，建议`pip install -U jmcomic`后重启bot（issue [#23](https://github.com/AmethystTim/JM_PDF_plugin/issues/23)）<br>3. 在`config.yml`内`client`的`domain`一项中添加可用域名或将`client`全部注释掉以使用默认域名列表|
 |与`langbot`内置AI对话冲突|issue [#4](https://github.com/AmethystTim/JM_PDF_plugin/issues/4)|
 |`Docker`部署langbot导致的路径问题|issue [#9](https://github.com/AmethystTim/JM_PDF_plugin/issues/9)|
@@ -35,7 +35,7 @@
 
 > 有其他问题欢迎提issue或在交流群讨论
 
-## 使用方法❗
+## 使用方法💡
 
 ### 插件安装🛠️
 
@@ -56,15 +56,24 @@
 
 </div>
 
-> 若发生端口冲突，请修改端口为其他值，同时将`main.py`文件中`self.napcat = NapCatApi('127.0.0.1', 3000)`中的端口修改为新端口
+> 若发生端口冲突，请将端口修改为其他值，同时将`main.py`文件中`self.napcat = NapCatApi('127.0.0.1', 3000)`中的端口修改为新端口
 
 ### 偏好配置🔧
 
-- 编辑`config.yml`
-  - `dir_rule`部分：修改`base_dir`为你想存储漫画的目录
-  - `client`部分：若均无法访问可尝试用“**#**”注释掉`client`所有部分，使用默认配置的域名列表
-  - `download`部分：一般情况下可忽略
-  - `plugins`部分：大部分漫画都可以在**无登录状态下**访问/下载，但是有些漫画需要登录才可以查看，若有需要可以配置你的账号信息
+#### JM下载 config.yml
+
+- `dir_rule`部分：修改`base_dir`为你想存储漫画的目录
+- `client`部分：若均无法访问可尝试用“**#**”注释掉`client`所有部分，使用默认配置的域名列表
+- `download`部分：一般情况下可忽略
+- `plugins`部分：大部分漫画都可以在**无登录状态下**访问/下载，但是有些漫画需要登录才可以查看，若有需要可以配置你的账号信息
+
+**MacOS用户**注意❗
+
+由于MacOS版NapCat权限原因，需要将`base_dir`一项修改为`NapCat`的缓存目录：
+
+```
+/Users/<your_username>/Library/Containers/com.tencent.qq/Data/.config/QQ/NapCat/temp
+```
 
 ```yaml
 # Github Actions 下载脚本配置
@@ -74,7 +83,7 @@ dir_rule:
   base_dir: "C:\\Users\\Hello\\Desktop\\downloads" # 漫画/PDF的存储目录（注意转义字符的使用）
   rule: Bd_Aid_Pindex
 
-# 域名配置，若均无法访问可尝试用“#”注释，使用默认配置的域名列表
+# 域名配置，若均无法访问可尝试用“#”注释client所有部分，以使用默认配置的域名列表
 client:
   impl: api
   domain:
@@ -84,7 +93,7 @@ client:
       - www.cdnmhwscc.vip
       - www.cdnblackmyth.club
 
-# 下载配置，非必要无需关注
+# 下载配置，无需关注
 download:
   cache: true # 如果要下载的文件在磁盘上已存在，不用再下一遍了吧？
   image:
@@ -94,7 +103,7 @@ download:
     # batch_count: 章节的批量下载图片线程数
     batch_count: 45
 
-# 插件项配置，若不需要请使用“#”注释掉
+# jmcomic包插件项配置，非必需配置
 plugins:
   after_init:
     - plugin: login # 登录插件，以下载某些需要登录才能下载的漫画，需要配置登录信息
@@ -103,7 +112,10 @@ plugins:
         password: your_password # 密码
 ```
 
-- 编辑`commands.yml`，可以**自定义白名单**、**激活/禁用指令**，请根据自己的需求进行修改
+#### 指令管理 commands.yml
+
+- `whitelist`部分：若要启用群聊白名单，请将`enabled`设置为`true`，并填入需要加入白名单的群聊id
+- `commands`部分：为了防止意外触发某些指令炸群，请根据你的实际需求禁用/激活指令，若要禁用某指令，则将其对应值由`true`修改为`false`
 
 ```yaml
 # 插件指令管理
