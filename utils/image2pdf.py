@@ -36,32 +36,79 @@ def all2PDF(input_folder, pdfpath, pdfname, chap=1):
     if subdir == []:
         print(f"[JM PDF plugin] {chap}章不存在")
         return -1
+        
     for i in subdir:
-        with os.scandir(path + "/" + str(i)) as entries:
+        chapter_images = []
+        with os.scandir(os.path.join(path, str(i))) as entries:
             for entry in entries:
                 if entry.is_dir():
-                    print(f"[JM PDF plugin] {path + "/" + str(i)}目录下不应该有目录")
-                if entry.is_file():
-                    image.append(path + "/" + str(i) + "/" + entry.name)
+                    print(f"[JM PDF plugin] {os.path.join(path, str(i))}目录下不应该有目录")
+                if entry.is_file() and entry.name.lower().endswith(('.jpg', '.jpeg')):
+                    chapter_images.append(os.path.join(path, str(i), entry.name))
+        
+        # 按文件名中的数字排序
+        try:
+            chapter_images.sort(key=lambda x: int(os.path.splitext(os.path.basename(x))[0]))
+        except (ValueError, IndexError):
+            print(f"[JM PDF plugin] 文件名格式异常，使用字符串排序")
+            chapter_images.sort()
+            
+        image.extend(chapter_images)
+    
+    # 确保有图片可处理
+    if not image:
+        print(f"[JM PDF plugin] 未找到任何图片文件")
+        return -1
 
-    if "jpg" in image[0]:
-        output = Image.open(image[0])
-        image.pop(0)
+    # 修复：处理第一张图片并初始化output
+    first_image = None
+    if image:
+        try:
+            first_path = image[0]
+            if os.path.splitext(first_path)[1].lower() in ['.jpg', '.jpeg']:
+                first_image = Image.open(first_path)
+                # 确保图片模式正确
+                if first_image.mode != "RGB":
+                    first_image = first_image.convert("RGB")
+                output = first_image  # 设置第一张图片为输出基础
+                # 不再从列表中移除第一张图片
+            else:
+                print(f"[JM PDF plugin] 第一个文件 {first_path} 不是有效的图片文件")
+                return -1
+        except Exception as e:
+            print(f"[JM PDF plugin] 处理第一张图片失败: {e}")
+            return -1
+    else:
+        print(f"[JM PDF plugin] 未找到有效的图片文件")
+        return -1
 
+    # 处理所有图片（包括第一张）
     for file in image:
-        if "jpg" in file:
-            img_file = Image.open(file)
-            if img_file.mode == "RGB":
-                img_file = img_file.convert("RGB")
-            sources.append(img_file)
+        if os.path.splitext(file)[1].lower() in ['.jpg', '.jpeg']:
+            try:
+                img_file = Image.open(file)
+                if img_file.mode != "RGB":
+                    img_file = img_file.convert("RGB")
+                # 只有不是第一张图片才添加到sources列表
+                if file != image[0]:
+                    sources.append(img_file)
+            except Exception as e:
+                print(f"[JM PDF plugin] 处理图片 {file} 失败: {e}")
 
-    pdf_file_path = pdfpath + "/" + pdfname
-    if pdf_file_path.endswith(".pdf") == False:
+    # 确保PDF路径正确
+    pdf_file_path = os.path.join(pdfpath, pdfname)
+    if not pdf_file_path.endswith(".pdf"):
         pdf_file_path = pdf_file_path + ".pdf"
-    output.save(pdf_file_path, "pdf", save_all=True, append_images=sources)
+        
+    # 保存PDF
+    try:
+        output.save(pdf_file_path, "PDF", save_all=True, append_images=sources)
+    except Exception as e:
+        print(f"[JM PDF plugin] 保存 PDF 时出错: {e}")
+        return -1
     end_time = time.time()
     run_time = end_time - start_time
-    print("[JM PDF plugin] 运行时间：%3.2f 秒" % run_time)
+    print(f"[JM PDF plugin] 运行时间：{run_time:.2f} 秒")
     return 0
 
 
@@ -77,7 +124,7 @@ def downloadManga(manga):
         1: 漫画不存在
         -1: 下载失败
     '''
-    config = os.path.join(os.path.dirname(__file__), "../config.yml")
+    config = os.path.join(os.path.dirname(__file__), "..", "config.yml")
     loadConfig = jmcomic.JmOption.from_file(config)
     mangaCache(manga)
     try:
@@ -101,24 +148,30 @@ def convertPDF(manga):
         1: 存在多p
         None: 未分多p
     '''
-    config = os.path.join(os.path.dirname(__file__), "../config.yml")
+    config = os.path.join(os.path.dirname(__file__), "..", "config.yml")
     with open(config, "r", encoding="utf8") as f:
         data = yaml.load(f, Loader=yaml.FullLoader)
         path = data["dir_rule"]["base_dir"]
+    
     with os.scandir(path) as entries:
         for entry in entries:
             if not entry.name == manga:
                 continue
-            if os.path.exists(os.path.join(os.path.join(path, entry.name+".pdf"))):
-                print("[JM PDF plugin] 文件：《%s》 已存在，跳过" % entry.name)
+                
+            pdf_path = os.path.join(path, entry.name + ".pdf")
+            if os.path.exists(pdf_path):
+                print(f"[JM PDF plugin] 文件：《{entry.name}》 已存在，跳过")
                 break
             else:
-                print("[JM PDF plugin] 开始转换：%s " % entry.name)
-                if len(os.listdir(os.path.join(path, entry.name))) > 1:
-                    if all2PDF(os.path.join(path, entry.name), path, f"{entry.name}-1") == -1:
+                print(f"[JM PDF plugin] 开始转换：{entry.name}")
+                manga_path = os.path.join(path, entry.name)
+                
+                if len(os.listdir(manga_path)) > 1:
+                    if all2PDF(manga_path, path, f"{entry.name}-1") == -1:
                         return -1
                 else:
-                    all2PDF(os.path.join(path, entry.name), path, f"{entry.name}")
+                    all2PDF(manga_path, path, entry.name)
+                    
             if len(os.listdir(os.path.join(path, entry.name))) > 1:
                 return 1
     return None        
@@ -134,11 +187,12 @@ def mangaCache(id):
         True: 已缓存
         False: 未缓存
     '''
-    config = os.path.join(os.path.dirname(__file__), "../config.yml")
+    config = os.path.join(os.path.dirname(__file__), "..", "config.yml")
     with open(config, "r", encoding="utf8") as f:
         data = yaml.load(f, Loader=yaml.FullLoader)
         path = data["dir_rule"]["base_dir"]
-        if os.path.exists(os.path.join(path, id)):
+        manga_path = os.path.join(path, id)
+        if os.path.exists(manga_path):
             print(f"[JM PDF plugin] 漫画{id}已存在")
             return True
         return False
