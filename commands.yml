@@ -1,22 +1,25 @@
 # 插件指令管理
 
-# 白名单机制，启用后仅允许白名单群聊使用指令
+# 白名单机制，启用后仅允许白名单群聊/用户使用指令
 whitelist: 
-  # 是否启用群聊白名单
+  # 是否启用白名单
   enabled: false
-  # 白名单群聊id
+  # 白名单群聊/用户id
   groups: [
     114514,
+  ]
+  users: [
+    1919810,
   ]
 
 # 指令管理列表，若需禁用某指令，则将其对应值由true修改为false
 commands: [
-  # 指令：/jm [jmID]
-  "/jm [ID]": true,
   # 指令：/jm [jmID] [chapter]
   "/jm [ID] [CHAPTER]": true,
-  # 指令：文案匹配
-  "[text]": true,
   # 指令：/jm search [keyword]
   "/jm search [KEYWORD]": true,
+  # 指令： 清除缓存
+  "/jm clear": true,
+  # 指令：文案匹配
+  "[text]": false,
 ]

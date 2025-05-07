@@ -1,1 +1,1 @@
-jmcomic
+jmcomic>=2.5.35
