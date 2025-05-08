@@ -30,43 +30,77 @@
 
 <hr>
 
-## 常见问题❓
-
-|Q|A|
-|-|-|
-|插件加载失败|请不要直接从`Langbot webui`的插件市场中直接安装，请按照README中的安装步骤进行，并确保您的插件**目录名称**为`JM_PDF_plugin`|
-|漫画下载失败|1. 检查网络配置，推荐添加网络代理<br>2. 检查`jmcomic`包是否为最新版本，建议`pip install -U jmcomic`后重启bot（issue [#23](https://github.com/AmethystTim/JM_PDF_plugin/issues/23)）<br>3. 在`config.yml`内`client`的`domain`一项中添加可用域名或将`client`全部注释掉以使用默认域名列表|
-|与`langbot`内置AI对话冲突|issue [#4](https://github.com/AmethystTim/JM_PDF_plugin/issues/4)|
-|`Docker`部署langbot导致的路径问题|issue [#9](https://github.com/AmethystTim/JM_PDF_plugin/issues/9)|
-|`Docker`平台部署Langbot无法连接消息平台|issue [#32](https://github.com/AmethystTim/JM_PDF_plugin/issues/32)|
-|控制台报错：无效的`apikey`|与插件无关，可能是LangBot的`provider.json`配置有误|
-
-> 有其他问题欢迎提issue或在交流群讨论
-
-<hr>
+---
 
 ## 插件架构⚙️
 
-TODO :)
+```
+JM_PDF_plugin/
+│
+├── cells/                # 独立模块
+│   ├── apicaller.py      # 消息平台API调用模块
+│   ├── argsparser.py     # 参数解析模块
+│   ├── controller.py     # 控制器模块
+│   ├── converter.py      # 转换器模块
+│   └── downloader.py     # 下载器模块
+│
+├── utils/                # 实用工具模块
+│   ├── cacheclener.py    # 缓存清理模块
+│   ├── filehandler.py    # 文件处理模块
+│   └── searchhandler.py  # 站内搜索模块
+│
+├── handlers/             # 指令处理模块
+│   ├── jmmanga.py        # 处理漫画下载
+│   ├── jmsearch.py       # 处理漫画搜索
+│   └── jmclear.py        # 处理缓存清理
+│
+├── config.yml            # JM下载配置文件
+├── commands.yml          # 指令管理配置文件
+│
+├── main.py               # 插件主程序入口
+├── requirements.txt      # 依赖列表
+│
+└── README.md             # 项目说明文档
+```
 
-## 使用方法💡
+## 使用方法🧭
 
-### 插件安装🛠️
+### 1. 插件安装🛠️
 
-配置完成 [LangBot](https://github.com/RockChinQ/QChatGPT) 主程序后使用管理员账号向机器人发送命令即可安装：
+#### 方法一：管理员账号安装
+
+配置完成 [LangBot](https://github.com/RockChinQ/LangBot) 主程序后使用管理员账号向机器人发送命令即可安装：
 
 ```
 !plugin get https://github.com/AmethystTim/JM_PDF_plugin.git
 ```
-或查看详细的[插件安装说明](https://github.com/RockChinQ/QChatGPT/wiki/5-%E6%8F%92%E4%BB%B6%E4%BD%BF%E7%94%A8)
+或查看详细的[安装说明](https://docs.langbot.app/insight/guide)
 
-**请注意**❗
+#### 方法二：git安装（推荐）
 
-**不要直接从`Langbot webui`的插件市场中直接安装（项目更改过名称）**，请按照README中的安装步骤进行
+进入`Langbot`的`plugins`目录，使用`git`克隆`JM_PDF_plugin`仓库：
 
-### 网络配置🛜
+```
+git clone https://github.com/AmethystTim/JM_PDF_plugin.git
+```
 
-访问`NapCat`的webui（默认为`http://127.0.0.1:6099`），在**网络配置**栏目中新建**HTTP服务器**，主机为`127.0.0.1`，端口为`3000`
+#### 方法三：插件市场安装（不推荐）
+
+访问`Langbot webui`（默认为`127.0.0.1:5300`），进入**插件市场**，搜索`JM-PDF-plugin`进行安装
+
+---
+
+**注意**❗
+
+由于项目名称发生过更改，使用插件市场直接安装插件可能会导致某些不可预测的问题
+
+---
+
+### 2. 网络配置🔗
+
+- 访问`NapCat`消息平台的webui（默认为`http://127.0.0.1:6099`）
+- 在**网络配置**栏目中新建**HTTP服务器**
+- 主机填写为`127.0.0.1`，端口填写为`3000`
 
 <div align="center">
 
@@ -74,24 +108,30 @@ TODO :)
 
 </div>
 
-> 若发生端口冲突，请将端口修改为其他值，同时将`main.py`文件中`self.napcat = NapCatApi('127.0.0.1', 3000)`中的端口修改为新端口
+---
 
-### 偏好配置🔧
+**注意**❗
 
-#### JM下载 config.yml
+若发生端口冲突，请将网络配置的端口修改为其他值
+
+同时将`main.py`文件
+
+```
+self.msg_platform = MsgPlatform('127.0.0.1', 3000)
+```
+
+一行的端口`3000`修改为新端口值
+
+---
+
+### 3. 偏好配置🔧
+
+#### 3.1 下载配置 config.yml
 
 - `dir_rule`部分：修改`base_dir`为你想存储漫画的目录
 - `client`部分：若均无法访问可尝试用“**#**”注释掉`client`所有部分，使用默认配置的域名列表
 - `download`部分：一般情况下可忽略
 - `plugins`部分：大部分漫画都可以在**无登录状态下**访问/下载，但是有些漫画需要登录才可以查看，若有需要可以配置你的账号信息
-
-**MacOS用户**注意❗
-
-由于MacOS版NapCat权限原因，需要将`base_dir`一项修改为`NapCat`的缓存目录：
-
-```
-/Users/<your_username>/Library/Containers/com.tencent.qq/Data/.config/QQ/NapCat/temp
-```
 
 ```yaml
 # Github Actions 下载脚本配置
@@ -129,11 +169,23 @@ plugins:
         username: your_username # 用户名
         password: your_password # 密码
 ```
+---
 
-#### 指令管理 commands.yml
+**MacOS用户注意**❗
+
+由于MacOS版NapCat权限原因，需要将`base_dir`一项修改为`NapCat`的缓存目录：
+
+```
+/Users/<your_username>/Library/Containers/com.tencent.qq/Data/.config/QQ/NapCat/temp
+```
+
+---
+
+#### 3.2 指令管理 commands.yml
 
 - `whitelist`部分：若要启用群聊白名单，请将`enabled`设置为`true`，并填入需要加入白名单的群聊id
 - `commands`部分：为了防止意外触发某些指令炸群，请根据你的实际需求禁用/激活指令，若要禁用某指令，请将对应值由`true`修改为`false`
+- 以上配置需要**重载插件**/**重启bot**后才会生效
 
 ```yaml
 # 插件指令管理
@@ -162,6 +214,19 @@ commands: [
   "[text]": false,
 ]
 ```
+
+## 常见问题❓
+
+|Q|A|
+|-|-|
+|插件加载失败|请不要直接从`Langbot webui`的插件市场中直接安装，请按照README中的安装步骤进行，并确保您的插件**目录名称**为`JM_PDF_plugin`|
+|漫画下载失败|1. 检查网络配置，推荐添加网络代理<br>2. 检查`jmcomic`包是否为最新版本，建议`pip install -U jmcomic`后重启bot（issue [#23](https://github.com/AmethystTim/JM_PDF_plugin/issues/23)）<br>3. 在`config.yml`内`client`的`domain`一项中添加可用域名或将`client`全部注释掉以使用默认域名列表|
+|与`langbot`内置AI对话冲突|issue [#4](https://github.com/AmethystTim/JM_PDF_plugin/issues/4)|
+|`Docker`部署Langbot导致的路径问题|issue [#9](https://github.com/AmethystTim/JM_PDF_plugin/issues/9)|
+|`Docker`部署Langbot无法连接消息平台|issue [#32](https://github.com/AmethystTim/JM_PDF_plugin/issues/32)|
+|控制台报错：无效的`apikey`|与插件无关，可能是LangBot的`provider.json`配置有误|
+
+> 有其他问题欢迎提issue或在交流群讨论
 
 ## 指令🤖
 
