@@ -28,8 +28,6 @@
 |定时撤回|✅|
 |获取分类/排行榜|🚧|
 
-<hr>
-
 ---
 
 ## 插件架构⚙️
@@ -88,11 +86,9 @@ git clone https://github.com/AmethystTim/JM_PDF_plugin.git
 
 访问`Langbot webui`（默认为`127.0.0.1:5300`），进入**插件市场**，搜索`JM-PDF-plugin`进行安装
 
----
-
 **注意**❗
 
-由于项目名称发生过更改，使用插件市场直接安装插件可能会导致某些不可预测的问题
+由于项目名称发生过更改，使用**插件市场**直接安装插件可能会**导致某些不可预测的问题**，  请尽量使用前两种方式进行安装
 
 ---
 
@@ -107,8 +103,6 @@ git clone https://github.com/AmethystTim/JM_PDF_plugin.git
 <img src="./images/napcat_1.png" width="60%">
 
 </div>
-
----
 
 **注意**❗
 
@@ -169,7 +163,6 @@ plugins:
         username: your_username # 用户名
         password: your_password # 密码
 ```
----
 
 **MacOS用户注意**❗
 
@@ -215,6 +208,8 @@ commands: [
 ]
 ```
 
+---
+
 ## 常见问题❓
 
 |Q|A|
@@ -228,6 +223,8 @@ commands: [
 
 > 有其他问题欢迎提issue或在交流群讨论
 
+---
+
 ## 指令🤖
 
 |指令|说明|参数|备注|
@@ -236,6 +233,8 @@ commands: [
 |`/jm [jmID] [chapter]`|下载漫画指定章节|`jmID` `chapter`|`chapter`：指定章节，若不指定默认转换第一章|
 |`/jm search [keyword]`|搜索漫画|`keyword`|`keyword`：搜索关键字|
 |`/jm clear`|清除缓存|-|-|
+
+---
 
 ## 演示✨
 
@@ -302,6 +301,8 @@ commands: [
 </div>
 
 </details>
+
+---
 
 ## 致谢🤝
 
