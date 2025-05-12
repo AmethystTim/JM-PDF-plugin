@@ -1,10 +1,21 @@
 import json
 import aiohttp
+import os
+import yaml
+
+DOCKER_CONFIG_PATH = os.path.join(os.path.dirname(__file__), "..", "docker.yml")
 
 class MsgPlatform():
     '''消息平台类'''
-    def __init__(self, host: str, port: int):
-        self.url = f"http://{host}:{port}"
+    def __init__(self, port: int):
+        '''
+        Args:
+            port (int): 端口号
+        '''
+        with open(DOCKER_CONFIG_PATH, "r", encoding="utf-8") as f:
+            data = yaml.load(f, Loader=yaml.FullLoader)
+            host = 'host.docker.internal' if data['docker_cfg']['enabled'] else '127.0.0.1'
+            self.url = f"http://{host}:{port}"
 
     async def callApi(self, api_url: str, payload: dict) -> dict:
         '''

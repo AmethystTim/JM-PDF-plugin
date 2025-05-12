@@ -1,0 +1,13 @@
+################################################
+# 特别注意：                            
+# 如果你是使用Docker部署LangBot的用户，请按照以下步骤修改配置文件：
+# 修改docker_cfg配置项
+# - 将enabeld设置为true
+# - 将host_base_dir修改为宿主机上PDF的实际存储目录
+#
+# 例如: "C:\\Users\\Hello\\Desktop\\downloads"
+################################################
+
+docker_cfg: # 非Docker部署LangBot用户请无视此项
+  enabled: false # 是否使用Docker部署LangBot
+  host_base_dir: "C:\\Users\\Hello\\Desktop\\downloads" # 宿主机上PDF的实际存储目录（注意转义字符的使用）

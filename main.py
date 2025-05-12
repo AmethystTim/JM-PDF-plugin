@@ -28,7 +28,7 @@ current_dir = os.path.dirname(__file__)
 class JMcomicPDFPlugin(BasePlugin):
     # 插件加载时触发
     def __init__(self, host: APIHost):
-        self.msg_platform = MsgPlatform('127.0.0.1', 3000)
+        self.msg_platform = MsgPlatform(port=3000)
         self.maxfilecount = 50 # 最大缓存文件数量
         self.instructions = {
             "/jm": 

@@ -8,6 +8,7 @@ from pkg.plugin.context import EventContext
 from ..cells.apicaller import MsgPlatform
 
 CONFIG_PATH = os.path.join(os.path.dirname(__file__), '..', 'config.yml')
+DOCKER_CONFIG_PATH = os.path.join(os.path.dirname(__file__), '..', 'docker.yml')
 
 class FileHandler:
     '''处理文件操作'''
@@ -24,6 +25,10 @@ class FileHandler:
         with open(CONFIG_PATH, 'r', encoding='utf-8') as f:
             data = yaml.load(f, Loader=yaml.FullLoader)
             self.file = os.path.join(data["dir_rule"]["base_dir"], self.name)
+        with open(DOCKER_CONFIG_PATH, 'r', encoding='utf-8') as f:
+            data = yaml.load(f, Loader=yaml.FullLoader)
+            if data['docker_cfg']['enabled']:
+                self.file = os.path.join(data["docker_cfg"]["host_base_dir"], self.name)
     
     async def sendFile(self):
         '''发送文件'''

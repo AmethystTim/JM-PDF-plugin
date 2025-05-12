@@ -1,11 +1,24 @@
 # Github Actions 下载脚本配置
 version: '2.0'
 
+################################################
+# 特别注意：                            
+# 如果你是使用Docker部署LangBot的用户，请按照以下步骤修改配置文件：
+#
+# 将dir_rule中的base_dir一项修改为LangBot容器内的可达路径
+#
+# 根据LangBot的挂载配置，你目前可以在这两个目录下选择你想存储PDF的位置
+#    - /app/data
+#    - /app/plugins 
+#
+# 例如："/app/plugins/JM_PDF_plugin/downloads/"
+################################################
+
 dir_rule:
   base_dir: "C:\\Users\\Hello\\Desktop\\downloads" # 漫画/PDF的存储目录（注意转义字符的使用）
   rule: Bd_Aid_Pindex
 
-# 域名配置，若均无法访问可尝试用“#”注释，使用默认配置的域名列表
+# 域名配置，若均无法访问可尝试用“#”注释client所有部分，以使用默认配置的域名列表
 client:
   impl: api
   domain:
@@ -15,7 +28,7 @@ client:
       - www.cdnmhwscc.vip
       - www.cdnblackmyth.club
 
-# 下载配置，非必要无需关注
+# 下载配置，无需关注
 download:
   cache: true # 如果要下载的文件在磁盘上已存在，不用再下一遍了吧？
   image:
@@ -25,7 +38,7 @@ download:
     # batch_count: 章节的批量下载图片线程数
     batch_count: 45
 
-# 插件项配置，若不需要请使用“#”注释掉
+# jmcomic包插件项配置，非必需配置
 plugins:
   after_init:
     - plugin: login # 登录插件，以下载某些需要登录才能下载的漫画，需要配置登录信息

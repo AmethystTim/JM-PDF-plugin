@@ -122,7 +122,7 @@ self.msg_platform = MsgPlatform('127.0.0.1', 3000)
 
 #### 3.1 下载配置 config.yml
 
-- `dir_rule`部分：修改`base_dir`为你想存储漫画的目录
+- `dir_rule`部分：修改`base_dir`为你想存储漫画的目录，若使用Docker部署LangBot，请参考注释说明
 - `client`部分：若均无法访问可尝试用“**#**”注释掉`client`所有部分，使用默认配置的域名列表
 - `download`部分：一般情况下可忽略
 - `plugins`部分：大部分漫画都可以在**无登录状态下**访问/下载，但是有些漫画需要登录才可以查看，若有需要可以配置你的账号信息
@@ -130,6 +130,19 @@ self.msg_platform = MsgPlatform('127.0.0.1', 3000)
 ```yaml
 # Github Actions 下载脚本配置
 version: '2.0'
+
+################################################
+# 特别注意：                            
+# 如果你是使用Docker部署LangBot的用户，请按照以下步骤修改配置文件：
+#
+# 将dir_rule中的base_dir一项修改为LangBot容器内的可达路径
+#
+# 根据LangBot的挂载配置，你目前可以在这两个目录下选择你想存储PDF的位置
+#    - /app/data
+#    - /app/plugins 
+#
+# 例如："/app/plugins/JM_PDF_plugin/downloads/"
+################################################
 
 dir_rule:
   base_dir: "C:\\Users\\Hello\\Desktop\\downloads" # 漫画/PDF的存储目录（注意转义字符的使用）
@@ -206,6 +219,29 @@ commands: [
   # 指令：文案匹配
   "[text]": false,
 ]
+```
+
+#### 3.3 Docker相关配置 docker.yml
+
+针对使用`Docker`部署`Langbot`的用户的配置，若不是使用`Docker`部署LangBot的用户，请**忽略此项配置**
+
+- `docker_cfg`部分：修改`enabled`为`true`
+- `host_base_dir`部分：修改为宿主机上PDF的实际存储目录
+
+```yaml
+################################################
+# 特别注意：                            
+# 如果你是使用Docker部署LangBot的用户，请按照以下步骤修改配置文件：
+# 修改docker_cfg配置项
+# - 将enabeld设置为true
+# - 将host_base_dir修改为宿主机上PDF的实际存储目录
+#
+# 例如: "C:\\Users\\Hello\\Desktop\\downloads"
+################################################
+
+docker_cfg: # 非Docker部署LangBot用户请无视此项
+  enabled: false # 是否使用Docker部署LangBot
+  host_base_dir: "C:\\Users\\Hello\\Desktop\\downloads" # 宿主机上PDF的实际存储目录（注意转义字符的使用）
 ```
 
 ---
