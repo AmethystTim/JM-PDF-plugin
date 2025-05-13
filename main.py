@@ -24,7 +24,7 @@ from .handlers.jmclear import *
 current_dir = os.path.dirname(__file__)
 
 # 注册插件
-@register(name="JM_PDF_plugin", description="突破卡脖子核心技术", version="1.0", author="Amethyst")
+@register(name="JM PDF plugin", description="突破卡脖子核心技术的漫画下载插件🧩", version="1.1", author="AmethystTim")
 class JMcomicPDFPlugin(BasePlugin):
     # 插件加载时触发
     def __init__(self, host: APIHost):

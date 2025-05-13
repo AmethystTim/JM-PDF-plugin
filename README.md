@@ -2,7 +2,9 @@
 
 ## 这是什么？🤔
 
-一个适用于**LangBot+NapCat消息平台**的漫画下载插件🧩
+一个适用于**LangBot**的漫画下载插件🧩
+
+~~致力于突破卡脖子核心技术~~
 
 将你想看的漫画转换为PDF，上传到QQ群聊/QQ私信中
 
@@ -33,12 +35,12 @@
 ## 插件架构⚙️
 
 ```
-JM_PDF_plugin/
+JM-PDF-plugin/
 │
 ├── cells/                # 独立模块
 │   ├── apicaller.py      # 消息平台API调用模块
 │   ├── argsparser.py     # 参数解析模块
-│   ├── controller.py     # 控制器模块
+│   ├── controller.py     # 访问控制模块
 │   ├── converter.py      # 转换器模块
 │   └── downloader.py     # 下载器模块
 │
@@ -70,29 +72,29 @@ JM_PDF_plugin/
 配置完成 [LangBot](https://github.com/RockChinQ/LangBot) 主程序后使用管理员账号向机器人发送命令即可安装：
 
 ```
-!plugin get https://github.com/AmethystTim/JM_PDF_plugin.git
+!plugin get https://github.com/AmethystTim/JM-PDF-plugin.git
 ```
 或查看详细的[安装说明](https://docs.langbot.app/insight/guide)
 
 #### 方法二：git安装（推荐）
 
-进入`Langbot`的`plugins`目录，使用`git`克隆`JM_PDF_plugin`仓库：
+进入`Langbot`的`plugins`目录，使用`git`克隆仓库：
 
 ```
-git clone https://github.com/AmethystTim/JM_PDF_plugin.git
+git clone https://github.com/AmethystTim/JM-PDF-plugin.git
 ```
 
-#### 方法三：插件市场安装（不推荐）
+#### 方法三：插件市场安装
 
 访问`Langbot webui`（默认为`127.0.0.1:5300`），进入**插件市场**，搜索`JM-PDF-plugin`进行安装
-
-**注意**❗
-
-由于项目名称发生过更改，使用**插件市场**直接安装插件可能会**导致某些不可预测的问题**，  请尽量使用前两种方式进行安装
 
 ---
 
 ### 2. 网络配置🔗
+
+请根据你的消息平台进行网络配置
+
+#### 2.1 NapCat配置
 
 - 访问`NapCat`消息平台的webui（默认为`http://127.0.0.1:6099`）
 - 在**网络配置**栏目中新建**HTTP服务器**
@@ -104,14 +106,60 @@ git clone https://github.com/AmethystTim/JM_PDF_plugin.git
 
 </div>
 
+#### 2.2 Lagrange配置
+
+- 在`appsettings.json`中修改`Implementations`部分
+- 新增`"Type": "HTTP"`一项，具体配置参考如下：
+
+```json
+"Implementations": [
+    {
+        "Type": "ReverseWebSocket",
+        "Host": "127.0.0.1",
+        "Port": 2280,
+        "Suffix": "/ws",
+        "ReconnectInterval": 5000,
+        "HeartBeatInterval": 5000,
+        "AccessToken": ""
+    },
+    {
+        "Type": "Http",
+        "Host": "127.0.0.1",
+        "Port": 3000,
+        "AccessToken": ""
+    }
+]
+```
+
+#### 2.3 LLOneBot配置
+
+- 在注入版QQ中打开设置，进入LLOneBot栏目，进行网络配置
+- 启用HTTP服务，并将HTTP服务监听端口设置为`3000`
+
+<div align="center">
+
+<img src="./images/llonebot_1.png" width="80%">
+
+</div>
+
 **注意**❗
 
-若发生端口冲突，请将网络配置的端口修改为其他值
+网络配置完成后可以使用`curl 127.0.0.1:3000`测试是否连通，出现
+
+```
+StatusCode        : 200
+StatusDescription : OK
+Content           : xxx is running/xxx 已启动
+```
+
+则说明网络配置成功
+
+若发生端口冲突，请将网络配置的端口修改为其他值，比如`3001`
 
 同时将`main.py`文件
 
 ```
-self.msg_platform = MsgPlatform('127.0.0.1', 3000)
+self.msg_platform = MsgPlatform(port=3000)
 ```
 
 一行的端口`3000`修改为新端口值
@@ -141,7 +189,7 @@ version: '2.0'
 #    - /app/data
 #    - /app/plugins 
 #
-# 例如："/app/plugins/JM_PDF_plugin/downloads/"
+# 例如："/app/plugins/JM-PDF-plugin/downloads/"
 ################################################
 
 dir_rule:
@@ -250,11 +298,8 @@ docker_cfg: # 非Docker部署LangBot用户请无视此项
 
 |Q|A|
 |-|-|
-|插件加载失败|请不要直接从`Langbot webui`的插件市场中直接安装，请按照README中的安装步骤进行，并确保您的插件**目录名称**为`JM_PDF_plugin`|
-|漫画下载失败|1. 检查网络配置，推荐添加网络代理<br>2. 检查`jmcomic`包是否为最新版本，建议`pip install -U jmcomic`后重启bot（issue [#23](https://github.com/AmethystTim/JM_PDF_plugin/issues/23)）<br>3. 在`config.yml`内`client`的`domain`一项中添加可用域名或将`client`全部注释掉以使用默认域名列表|
-|与`langbot`内置AI对话冲突|issue [#4](https://github.com/AmethystTim/JM_PDF_plugin/issues/4)|
-|`Docker`部署Langbot导致的路径问题|issue [#9](https://github.com/AmethystTim/JM_PDF_plugin/issues/9)|
-|`Docker`部署Langbot无法连接消息平台|issue [#32](https://github.com/AmethystTim/JM_PDF_plugin/issues/32)|
+|漫画下载失败|1. 检查网络配置，推荐添加网络代理<br>2. 检查`jmcomic`包是否为最新版本，建议`pip install -U jmcomic`后重启bot（issue [#23](https://github.com/AmethystTim/JM-PDF-plugin/issues/23)）<br>3. 在`config.yml`内`client`的`domain`一项中添加可用域名或将`client`全部注释掉以使用默认域名列表|
+|与`langbot`内置AI对话冲突|issue [#4](https://github.com/AmethystTim/JM-PDF-plugin/issues/4)|
 |控制台报错：无效的`apikey`|与插件无关，可能是LangBot的`provider.json`配置有误|
 
 > 有其他问题欢迎提issue或在交流群讨论
