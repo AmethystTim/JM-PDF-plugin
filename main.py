@@ -1,7 +1,5 @@
 import re
 import os
-import shutil
-import asyncio
 import yaml
 
 from pkg.plugin.context import register, handler, BasePlugin, APIHost, EventContext
@@ -24,8 +22,8 @@ from .handlers.jmclear import *
 current_dir = os.path.dirname(__file__)
 
 # 注册插件
-@register(name="JM PDF plugin", description="突破卡脖子核心技术的漫画下载插件🧩", version="1.1", author="AmethystTim")
-class JMcomicPDFPlugin(BasePlugin):
+@register(name="JM PDF plugin", description="突破卡脖子核心技术的漫画下载插件🧩", version="1.2", author="AmethystTim")
+class JMPDFPlugin(BasePlugin):
     # 插件加载时触发
     def __init__(self, host: APIHost):
         self.msg_platform = MsgPlatform(port=3000)

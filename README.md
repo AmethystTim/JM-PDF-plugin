@@ -1,4 +1,14 @@
-# JM PDF Plugin
+<h1 align="center">JM PDF Plugin</h1>
+
+<div align="center">
+
+![Python Version](https://img.shields.io/badge/Python-3.10+-blue)
+![Contributors](https://img.shields.io/github/contributors/AmethystTim/JM-PDF-plugin.svg?style=flat&label=贡献者&color=green)
+![forks](https://img.shields.io/github/forks/AmethystTim/JM-PDF-plugin.svg?style=flat&label=分支数)
+![stars](https://img.shields.io/github/stars/AmethystTim/JM-PDF-plugin?style=flat&label=星标数&color=red)
+![issues](https://img.shields.io/github/issues/AmethystTim/JM-PDF-plugin?&color=green)
+
+</div>
 
 ## 这是什么？🤔
 
@@ -131,6 +141,10 @@ git clone https://github.com/AmethystTim/JM-PDF-plugin.git
 ]
 ```
 
+> [!Note]
+> 
+> 目前Lagrange不支持**私聊发送PDF文件**，为体验所有功能，推荐使用NapCat消息平台
+
 #### 2.3 LLOneBot配置
 
 - 在注入版QQ中打开设置，进入LLOneBot栏目，进行网络配置
@@ -142,31 +156,31 @@ git clone https://github.com/AmethystTim/JM-PDF-plugin.git
 
 </div>
 
-**注意**❗
-
-网络配置完成后可以使用`curl 127.0.0.1:3000`测试是否连通，出现
-
-```
-StatusCode        : 200
-StatusDescription : OK
-Content           : xxx is running/xxx 已启动
-```
-
-则说明网络配置成功
-
-若发生端口冲突，请将网络配置的端口修改为其他值，比如`3001`
-
-同时将`main.py`文件
-
-```
-self.msg_platform = MsgPlatform(port=3000)
-```
-
-一行的端口`3000`修改为新端口值
+> [!Tip]
+> 
+> 网络配置完成后可以使用`curl 127.0.0.1:3000`测试是否连通，出现
+> ```
+> StatusCode        : 200
+> StatusDescription : OK
+> Content           : xxx is running/xxx 已启动
+> ```
+> 则说明网络配置成功
+> 
+> 若发生端口冲突，请将端口修改为其他值，比如`3001`，同时将`main.py`文件
+> ```
+> self.msg_platform = MsgPlatform(port=3000)
+> ```
+> 一行的端口`3000`修改为新端口值
 
 ---
 
 ### 3. 偏好配置🔧
+
+> [!Note]
+> 
+> 由于LangBot v4.0之后采用清单文件来注册插件，所以此后的配置编写会在webui上进行
+> 
+> 目前作者正在努力适配，LangBot v3.x的用户仍然使用配置文件进行配置
 
 #### 3.1 下载配置 config.yml
 
@@ -224,14 +238,15 @@ plugins:
         username: your_username # 用户名
         password: your_password # 密码
 ```
-
-**MacOS用户注意**❗
-
-由于MacOS版NapCat权限原因，需要将`base_dir`一项修改为`NapCat`的缓存目录：
-
-```
-/Users/<your_username>/Library/Containers/com.tencent.qq/Data/.config/QQ/NapCat/temp
-```
+> [!warning]
+>
+> 如果使用**MacOS**部署NapCat，需要将`base_dir`一项修改为`NapCat`的缓存目录
+> 
+> ```
+> /Users/<your_username>/Library/Containers/com.tencent.qq/Data/.config/QQ/NapCat/temp
+> ```
+>
+> 否则无法进行PDF文件的发送
 
 ---
 
@@ -387,5 +402,17 @@ docker_cfg: # 非Docker部署LangBot用户请无视此项
 
 ## 致谢🤝
 
+### 参考项目
+
 - **用于爬取JM的Python API封装**：[JMComic-Crawler-Python](https://github.com/hect0x7/JMComic-Crawler-Python) by [hect0x7](https://github.com/hect0x7)
 - **图像转PDF**：[image2pdf](https://github.com/salikx/image2pdf) by [salikx](https://github.com/salikx)
+
+### 贡献者🥳
+
+<a href="https://github.comAmethystTim/JM-PDF-plugin/graphs/contributors">
+  <img alt="contributors" src="https://contrib.rocks/image?repo=AmethystTim/JM-PDF-plugin"/>
+</a>
+
+## Stargazers over time
+
+[![Stargazers over time](https://starchart.cc/AmethystTim/JM-PDF-plugin.svg?variant=adaptive)](https://starchart.cc/AmethystTim/JM-PDF-plugin)
