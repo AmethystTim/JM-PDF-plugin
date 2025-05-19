@@ -2,27 +2,28 @@
 
 <div align="center">
 
+一个基于**LangBot**的漫画下载插件🧩
+
+将你想看的漫画转换为PDF，上传到QQ群聊/QQ私信中
+
+**支持缓存**，**指定章节下载**，**文案匹配**，**定时撤回**，**关键词搜索**，**白名单管理**✨
+
+</div>
+
+<div align="center">
+
+![Status](https://img.shields.io/badge/状态-开发中-green)
 ![Python Version](https://img.shields.io/badge/Python-3.10+-blue)
-![Contributors](https://img.shields.io/github/contributors/AmethystTim/JM-PDF-plugin.svg?style=flat&label=贡献者&color=green)
+![Contributors](https://img.shields.io/github/contributors/AmethystTim/JM-PDF-plugin.svg?style=flat&label=贡献者&color=red)
 ![forks](https://img.shields.io/github/forks/AmethystTim/JM-PDF-plugin.svg?style=flat&label=分支数)
-![stars](https://img.shields.io/github/stars/AmethystTim/JM-PDF-plugin?style=flat&label=星标数&color=red)
+![stars](https://img.shields.io/github/stars/AmethystTim/JM-PDF-plugin?style=flat&label=星标数&color=yellow)
 ![issues](https://img.shields.io/github/issues/AmethystTim/JM-PDF-plugin?&color=green)
 
 </div>
 
-## 这是什么？🤔
-
-一个适用于**LangBot**的漫画下载插件🧩
-
-~~致力于突破卡脖子核心技术~~
-
-将你想看的漫画转换为PDF，上传到QQ群聊/QQ私信中
-
-目前**支持缓存**，**指定章节下载**，**文案匹配**，**定时撤回**，**关键词搜索**，**白名单管理**✨
-
 <hr>
 
-## 插件功能🎨
+## 🎨 插件功能
 
 - ✅：已实现
 - 🚧：开发中
@@ -42,7 +43,7 @@
 
 ---
 
-## 插件架构⚙️
+## ⚙️ 插件架构
 
 ```
 JM-PDF-plugin/
@@ -66,6 +67,7 @@ JM-PDF-plugin/
 │
 ├── config.yml            # JM下载配置文件
 ├── commands.yml          # 指令管理配置文件
+├── docker.yml            # docker补丁配置文件
 │
 ├── main.py               # 插件主程序入口
 ├── requirements.txt      # 依赖列表
@@ -73,9 +75,9 @@ JM-PDF-plugin/
 └── README.md             # 项目说明文档
 ```
 
-## 使用方法🧭
+## 🧭 使用方法
 
-### 1. 插件安装🛠️
+### 1. 插件安装
 
 #### 方法一：管理员账号安装
 
@@ -100,7 +102,7 @@ git clone https://github.com/AmethystTim/JM-PDF-plugin.git
 
 ---
 
-### 2. 网络配置🔗
+### 2. 网络配置
 
 请根据你的消息平台进行网络配置
 
@@ -179,7 +181,7 @@ git clone https://github.com/AmethystTim/JM-PDF-plugin.git
 
 ---
 
-### 3. 偏好配置🔧
+### 3. 偏好配置
 
 > [!Note]
 > 
@@ -314,7 +316,7 @@ docker_cfg: # 非Docker部署LangBot用户请无视此项
 
 ---
 
-## 常见问题❓
+## ❓ 常见问题
 
 |Q|A|
 |-|-|
@@ -326,7 +328,7 @@ docker_cfg: # 非Docker部署LangBot用户请无视此项
 
 ---
 
-## 指令🤖
+## 🤖 指令
 
 |指令|说明|参数|备注|
 |-|-|-|-|
@@ -337,7 +339,7 @@ docker_cfg: # 非Docker部署LangBot用户请无视此项
 
 ---
 
-## 演示✨
+## 📸 效果展示
 
 ### 单章节漫画
 
@@ -405,19 +407,19 @@ docker_cfg: # 非Docker部署LangBot用户请无视此项
 
 ---
 
-## 致谢🤝
+## 📜 参考项目
 
-### 参考项目
-
-- **用于爬取JM的Python API封装**：[JMComic-Crawler-Python](https://github.com/hect0x7/JMComic-Crawler-Python) by [hect0x7](https://github.com/hect0x7)
+- **Python API for JMComic**：[JMComic-Crawler-Python](https://github.com/hect0x7/JMComic-Crawler-Python) by [hect0x7](https://github.com/hect0x7)
 - **图像转PDF**：[image2pdf](https://github.com/salikx/image2pdf) by [salikx](https://github.com/salikx)
 
-### 贡献者🥳
+## 🥳 贡献者
 
 <a href="https://github.comAmethystTim/JM-PDF-plugin/graphs/contributors">
   <img alt="contributors" src="https://contrib.rocks/image?repo=AmethystTim/JM-PDF-plugin"/>
 </a>
 
-## Stargazers over time
+## ⭐ Star Trend
+
+如果你觉得这个插件还不错，欢迎给我们一个star！🥰
 
 [![Stargazers over time](https://starchart.cc/AmethystTim/JM-PDF-plugin.svg?variant=adaptive)](https://starchart.cc/AmethystTim/JM-PDF-plugin)
