@@ -116,6 +116,11 @@ git clone https://github.com/AmethystTim/JM-PDF-plugin.git
 
 </div>
 
+> [!Warning]
+>
+> 请勿在网络配置中填写**token**，确保**token**一栏为空
+
+
 #### 2.2 Lagrange配置
 
 - 在`appsettings.json`中修改`Implementations`部分
