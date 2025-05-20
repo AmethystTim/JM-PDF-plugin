@@ -349,7 +349,7 @@ docker_cfg: # 非Docker部署LangBot用户请无视此项
 
 <div align="center">
 
-<img src="./images/readme.png" width="65%">
+<img src="./images/readme_singlechap1.png" width="65%">
 
 </div>
 
@@ -397,9 +397,9 @@ docker_cfg: # 非Docker部署LangBot用户请无视此项
 
 <div align="center">
 
-<img src="./images/readme_search.png" width="55%">
+<img src="./images/readme_search.png" width="50%">
 
-<img src="./images/readme_searchres.png" width="65%">
+<img src="./images/readme_searchres.png" width="55%">
 
 </div>
 
