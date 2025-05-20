@@ -18,6 +18,7 @@ from .utils.cachecleaner import *
 from .handlers.jmmanga import *
 from .handlers.jmsearch import *
 from .handlers.jmclear import *
+from .handlers.jmrank import *
 
 current_dir = os.path.dirname(__file__)
 
@@ -36,7 +37,9 @@ class JMPDFPlugin(BasePlugin):
             "/jm search [KEYWORD]" : 
                 r"^/jm search (.+)$",
             "/jm clear": 
-                r"^/jm clear$"
+                r"^/jm clear$",
+            "/jm rank":
+                r"^/jm rank(?:\s+(month|week))?$",
         }
         
         host.ap.logger.info(f"[JM PDF plugin] 正在应用指令管理配置...")
@@ -98,7 +101,8 @@ class JMPDFPlugin(BasePlugin):
                     Plain("突破jm卡脖子核心技术\n"),
                     Plain("· 将jm号对应本子转化为pdf\n\t如：/jm 123456\n"),
                     Plain("· 指定章节转化\n\t如：/jm 123456 2\n"),
-                    Plain("· jm站内搜索\n\t如：/jm search 偶像大师\n")
+                    Plain("· jm站内搜索\n\t如：/jm search 偶像大师\n"),
+                    Plain("· jm周/月排行榜\n\t如：/jm rank week\n"),
                 ]))
             case "/jm [ID] [CHAPTER]":
                 await jmManga(ctx, parseArgs(self.instructions[pattern], msg), self.msg_platform)
@@ -106,6 +110,8 @@ class JMPDFPlugin(BasePlugin):
                 await jmSearch(ctx, parseArgs(self.instructions[pattern], msg), self.msg_platform)
             case "/jm clear":
                 await jmClear(ctx, parseArgs(self.instructions[pattern], msg), self.msg_platform)
+            case "/jm rank":
+                await jmRank(ctx, parseArgs(self.instructions[pattern], msg), self.msg_platform)
             case _:
                 pass
         

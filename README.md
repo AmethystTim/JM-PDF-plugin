@@ -23,13 +23,10 @@
 
 <hr>
 
-## 🎨 插件功能
-
-- ✅：已实现
-- 🚧：开发中
+## ✨  插件特性
 
 |功能描述|实现情况|
-|-|-|
+|:-:|:-:|
 |漫画转PDF|✅|
 |指定章节转换|✅|
 |匹配文案对应jmID|✅|
@@ -39,7 +36,7 @@
 |白名单管理|✅|
 |指令管理|✅|
 |定时撤回|✅|
-|获取分类/排行榜|🚧|
+|获取分类/排行榜|✅|
 
 ---
 
@@ -58,12 +55,14 @@ JM-PDF-plugin/
 ├── utils/                # 实用工具模块
 │   ├── cacheclener.py    # 缓存清理模块
 │   ├── filehandler.py    # 文件处理模块
-│   └── searchhandler.py  # 站内搜索模块
+│   ├── searchhandler.py  # 站内搜索模块
+│   └── rankhandler.py    # 排行榜模块
 │
 ├── handlers/             # 指令处理模块
 │   ├── jmmanga.py        # 处理漫画下载
 │   ├── jmsearch.py       # 处理漫画搜索
-│   └── jmclear.py        # 处理缓存清理
+│   ├── jmclear.py        # 处理缓存清理
+│   └── jmrank.py         # 处理排行榜查询
 │
 ├── config.yml            # JM下载配置文件
 ├── commands.yml          # 指令管理配置文件
@@ -150,7 +149,7 @@ git clone https://github.com/AmethystTim/JM-PDF-plugin.git
 
 > [!Note]
 > 
-> 目前Lagrange不支持**私聊发送PDF文件**，为体验所有功能，推荐使用NapCat消息平台
+> 目前Lagrange不支持**在私聊中发送PDF文件**，为体验所有功能，推荐使用NapCat消息平台
 
 #### 2.3 LLOneBot配置
 
@@ -322,7 +321,7 @@ docker_cfg: # 非Docker部署LangBot用户请无视此项
 |-|-|
 |漫画下载失败|1. 检查网络配置，推荐添加网络代理<br>2. 检查`jmcomic`包是否为最新版本，建议`pip install -U jmcomic`后重启bot（issue [#23](https://github.com/AmethystTim/JM-PDF-plugin/issues/23)）<br>3. 在`config.yml`内`client`的`domain`一项中添加可用域名或将`client`全部注释掉以使用默认域名列表|
 |与`langbot`内置AI对话冲突|issue [#4](https://github.com/AmethystTim/JM-PDF-plugin/issues/4)|
-|控制台报错：无效的`apikey`|与插件无关，可能是LangBot的`provider.json`配置有误|
+|控制台报错：无效的`apikey`|非插件报错，可能是LangBot的`provider.json`配置有误|
 
 > 有其他问题欢迎提issue或在交流群讨论
 
@@ -335,7 +334,8 @@ docker_cfg: # 非Docker部署LangBot用户请无视此项
 |`/jm (help)`|查看帮助信息|-|可选参数：`help`|
 |`/jm [jmID] [chapter]`|下载漫画指定章节|`jmID` `chapter`|`chapter`：指定章节，若不指定默认转换第一章|
 |`/jm search [keyword]`|搜索漫画|`keyword`|`keyword`：搜索关键字|
-|`/jm clear`|清除缓存|-|-|
+|`/jm rank [duration]`|查询排行榜|`duration`|`duration`：排行榜时间范围，可选值：`week`，`month`，若不指定默认为`week`|
+|`/jm clear`|清除缓存漫画与转化的PDF|-|-|
 
 ---
 
@@ -399,7 +399,23 @@ docker_cfg: # 非Docker部署LangBot用户请无视此项
 
 <img src="./images/readme_search.png" width="50%">
 
-<img src="./images/readme_searchres.png" width="55%">
+<img src="./images/readme_searchresult.png" width="55%">
+
+</div>
+
+</details>
+
+### 排行榜查询
+
+<details>
+
+<summary>展开查看</summary>
+
+<div align="center">
+
+<img src="./images/readme_rank.png" width="50%">
+
+<img src="./images/readme_rankresult.png" width="55%">
 
 </div>
 
